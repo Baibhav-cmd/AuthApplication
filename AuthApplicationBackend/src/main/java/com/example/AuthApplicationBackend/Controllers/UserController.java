@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @AllArgsConstructor
-
-
 @RestController
 @RequestMapping("api/v1/users")
 public class UserController {
@@ -27,9 +25,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<UserDto> getByEmail(@PathVariable String email) {
-        return ResponseEntity.ok(userService.getByEmail(email));
+            return ResponseEntity.ok(userService.getByEmail(email));
     }
 
     @PutMapping("/{email}")
