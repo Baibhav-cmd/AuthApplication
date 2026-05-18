@@ -1,4 +1,4 @@
-package com.example.AuthApplicationBackend.Service;
+package com.example.AuthApplicationBackend.Service.impl;
 
 import com.example.AuthApplicationBackend.DTO.UserDto;
 import com.example.AuthApplicationBackend.Repository.UserRepository;
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
