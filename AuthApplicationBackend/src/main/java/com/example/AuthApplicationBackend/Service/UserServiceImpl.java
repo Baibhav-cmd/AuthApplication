@@ -3,6 +3,7 @@ package com.example.AuthApplicationBackend.Service;
 import com.example.AuthApplicationBackend.DTO.UserDto;
 import com.example.AuthApplicationBackend.Repository.UserRepository;
 import com.example.AuthApplicationBackend.Service.UserService;
+import com.example.AuthApplicationBackend.exceptions.ResourcesNotFoundException;
 import com.example.AuthApplicationBackend.mapper.UserMapper;
 import com.example.AuthApplicationBackend.model.Provider;
 import com.example.AuthApplicationBackend.model.Role;
@@ -44,13 +45,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean updateUser(UUID userId, UserDto userDto) {
-        if (userId == null) {
-            throw new IllegalArgumentException("UserId is required");
-        }
-        User existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
+    public boolean updateUser(String email, UserDto userDto) {
+        User existingUser=userRepository.findByEmail(email).orElseThrow(()->new RuntimeException("user not found"));
         userMapper.updateEntity(userDto, existingUser);
         userRepository.save(existingUser); // ✅ persist changes
         return true;
@@ -58,11 +54,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean deleteUser(UUID userId) {
-        if (userId == null) {
-            throw new IllegalArgumentException("UserId is required");
-        }
-        userRepository.deleteById(userId);
+    public boolean deleteUser(String email) {
+        User user=userRepository.findByEmail(email).orElseThrow(()->new RuntimeException("user not found"));
+
+        userRepository.delete(user);
         return true;
     }
 
@@ -74,9 +69,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDto getByUserId(UUID userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public UserDto getByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourcesNotFoundException("User not found"));
         return userMapper.toDTO(user);
     }
 }
