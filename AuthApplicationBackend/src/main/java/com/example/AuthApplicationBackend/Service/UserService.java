@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public interface UserService {
     UserDto createUser(UserDto userDto);
-    boolean updateUser(UUID userId,UserDto userDto);
-    boolean deleteUser(UUID userId);
+    boolean updateUser(String email,UserDto userDto);
+    boolean deleteUser(String email);
     List<UserDto> getAllUsers();
-    UserDto getByUserId(UUID userid);
+    UserDto getByEmail(String email);
 
 }
